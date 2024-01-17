@@ -40,7 +40,7 @@ runs:
         repository: 'release-plz'
     - name: Install release-plz
       shell: bash
-      run: cd release-plz # && cargo install --path crates/release_plz
+      run: cd release-plz && cargo install --path crates/release_plz
     - name: go back
       shell: bash
       run: mv release-plz ..
