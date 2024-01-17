@@ -25,6 +25,15 @@ branding:
 runs:
   using: "composite"
   steps:
+    - name: Install cargo-semver-checks
+      uses: jaxxstorm/action-install-gh-release@v1.10.0
+      with:
+        repo: obi1kenobi/cargo-semver-checks
+        tag: v0.27.0
+        cache: enable
+    - name: go up a dir
+      shell: bash
+      run: pushd ..
     - name: Set up cargo cache
       uses: actions/cache@v3
       with:
@@ -33,17 +42,11 @@ runs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-          target/
+          ./release-plz/target/
         key: cargo-${{ hashFiles('**/Cargo.lock') }}
         restore-keys:
           cargo-${{ hashFiles('**/Cargo.lock') }}
           cargo-
-    - name: Install cargo-semver-checks
-      uses: jaxxstorm/action-install-gh-release@v1.10.0
-      with:
-        repo: obi1kenobi/cargo-semver-checks
-        tag: v0.27.0
-        cache: enable
     - name: Get release-plz sources
       uses: GuillaumeFalourd/clone-github-repo-action@v2.3
       with:
@@ -53,7 +56,10 @@ runs:
         repository: 'release-plz'
     - name: Install release-plz
       shell: bash
-      run: cd release-plz && cargo install --path crates/release_plz && cd .. && rm -r release-plz
+      run: cd release-plz && cargo install --path crates/release_plz
+    - name: go back
+      shell: bash
+      run: popd
     - name: Configure git user from GitHub token
       uses: MarcoIeni/git-config@v0.1
     - name: Run release-plz
