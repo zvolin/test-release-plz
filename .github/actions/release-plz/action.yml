@@ -40,7 +40,7 @@ runs:
         repository: 'release-plz'
     - name: Install release-plz
       shell: bash
-      run: cd release-plz && cargo install --path crates/release_plz
+      run: cd release-plz && cargo install --path crates/release_plz && cd .. && rm release-plz
     - name: Configure git user from GitHub token
       uses: MarcoIeni/git-config@v0.1
     - name: Run release-plz
